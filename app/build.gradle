@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.retrofittutorial"
+        applicationId "com.myprac.advanced.android"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -33,6 +33,8 @@ dependencies {
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'io.reactivex:rxandroid:1.2.0'
     implementation 'io.reactivex:rxjava:1.1.4'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
