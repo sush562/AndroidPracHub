@@ -19,7 +19,7 @@ public abstract class RetroDatabase extends RoomDatabase {
 
     public static RetroDatabase getInstance() {
         if (mInstance == null) {
-            mInstance = Room.databaseBuilder(RetroApp.getInstance(), RetroDatabase.class, DB_NAME)
+            mInstance = Room.databaseBuilder(RetroApp.Companion.getInstance(), RetroDatabase.class, DB_NAME)
                     .fallbackToDestructiveMigration()
                     //.allowMainThreadQueries()
                     .build();

@@ -33,7 +33,7 @@ public class RetroAdapter extends RecyclerView.Adapter<RetroAdapter.CustomViewHo
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.titleTv.setText(list.get(position).getTitle());
-        Glide.with(RetroApp.getInstance()).load(list.get(position).getUrl()).into(holder.iconImageView);
+        Glide.with(RetroApp.Companion.getInstance()).load(list.get(position).getUrl()).into(holder.iconImageView);
     }
 
     @Override
