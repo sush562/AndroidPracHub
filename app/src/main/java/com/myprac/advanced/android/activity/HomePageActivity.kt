@@ -25,6 +25,7 @@ class HomePageActivity : AppCompatActivity(), HomePageClickCallback {
     fun getList(): List<String>{
         list.clear()
         list.add("Retrofit")
+        //list.add("Dagger")
         return list
     }
 
@@ -36,6 +37,9 @@ class HomePageActivity : AppCompatActivity(), HomePageClickCallback {
         val intent: Intent
         if (position == 0){
             intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        } else if(position == 1){
+            intent = Intent(this, DaggerTutorialActivity::class.java)
             startActivity(intent)
         }
     }
