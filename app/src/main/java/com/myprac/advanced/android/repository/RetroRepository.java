@@ -103,7 +103,7 @@ public class RetroRepository {
                 Log.e("DB", "Insert");
                 retroDatabase.retroPhotoDao().insertAll(list);
             }
-        }).subscribeOn(Schedulers.newThread()).subscribe();
+        }).subscribeOn(Schedulers.io()).subscribe();
     }
 
     private List<RetroPhoto> getFromDatabase() {

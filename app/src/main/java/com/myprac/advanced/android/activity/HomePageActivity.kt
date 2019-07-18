@@ -16,21 +16,16 @@ class HomePageActivity : AppCompatActivity(), HomePageClickCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
-        var recycle = findViewById<RecyclerView>(R.id.home_page_rv)
-        var adapter: HomePageAdapter = HomePageAdapter(getList(), this, this)
+        val recycle = findViewById<RecyclerView>(R.id.home_page_rv)
         recycle.layoutManager = LinearLayoutManager(this)
-        recycle.adapter = adapter
+        recycle.adapter = HomePageAdapter(getList(), this, this)
     }
 
     fun getList(): List<String>{
         list.clear()
         list.add("Retrofit")
-        //list.add("Dagger")
+        list.add("Movie")
         return list
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     override fun onClick(position: Int) {
@@ -39,8 +34,11 @@ class HomePageActivity : AppCompatActivity(), HomePageClickCallback {
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else if(position == 1){
-            intent = Intent(this, DaggerTutorialActivity::class.java)
+            /*intent = Intent(this, DaggerTutorialActivity::class.java)
+            startActivity(intent)*/
+            intent = Intent(this, MovieHomeActivity::class.java)
             startActivity(intent)
+
         }
     }
 }

@@ -12,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.DaggerTutorialActivity"></activity>
+        <activity
+            android:name=".activity.MovieHomeActivity"
+            android:label="@string/title_activity_movie_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activity.DaggerTutorialActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.HomePageActivity"
