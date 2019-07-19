@@ -11,11 +11,16 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.widget.Button
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.myprac.advanced.android.R
+import com.myprac.advanced.android.viewmodel.MovieListViewModel
 
 class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-
+    private lateinit var movieListViewModel : MovieListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_home)
@@ -35,6 +40,16 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        init()
+
+        movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
+
+        movieListViewModel.getMovieList(1)
+    }
+
+    fun init(){
+        val movieList: RecyclerView = findViewById(R.id.movie_list_rv)
+        movieList.layoutManager = GridLayoutManager(this, 2)
     }
 
     override fun onBackPressed() {
@@ -66,7 +81,7 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_latest_movie -> {
-                // Handle the camera action
+
             }
             R.id.nav_now_playing -> {
 

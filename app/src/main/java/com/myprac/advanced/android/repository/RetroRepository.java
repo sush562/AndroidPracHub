@@ -1,5 +1,6 @@
 package com.myprac.advanced.android.repository;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -12,17 +13,19 @@ import com.myprac.advanced.android.model.RetroPhoto;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 public class RetroRepository {
 
@@ -30,7 +33,7 @@ public class RetroRepository {
     private static RetroRepository mInstance;
     private Retrofit retrofit;
     private RetroDatabase retroDatabase;
-    private final CompositeSubscription mCompositeSubscription = new CompositeSubscription();
+    private final CompositeDisposable mCompositeSubscription = new CompositeDisposable();
 
     public RetroRepository() {
         Gson gson = new GsonBuilder()
@@ -51,27 +54,17 @@ public class RetroRepository {
     }
 
     public void getPhotoList(final MutableLiveData<List<RetroPhoto>> list) {
-        mCompositeSubscription.add(Observable.create(new Observable.OnSubscribe<List<RetroPhoto>>() {
+        Disposable observer = Observable.create(new ObservableOnSubscribe<List<RetroPhoto>>() {
             @Override
-            public void call(Subscriber<? super List<RetroPhoto>> subscriber) {
-                subscriber.onNext(getFromDatabase());
+            public void subscribe(ObservableEmitter<List<RetroPhoto>> emitter) throws Exception {
+                emitter.onNext(getFromDatabase());
             }
-        }).subscribeOn(Schedulers.newThread())
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<RetroPhoto>>() {
+                .subscribeWith(new DisposableObserver<List<RetroPhoto>>() {
                     @Override
-                    public void onCompleted() {
-                        //
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<RetroPhoto> count) {
-                        if (count.isEmpty()) {
+                    public void onNext(List<RetroPhoto> retroPhotos) {
+                        if (retroPhotos.isEmpty()) {
                             Log.e("API", "Called");
                             final GetRetroPhoto gerritAPI = retrofit.create(GetRetroPhoto.class);
                             gerritAPI.getAllPhotos().enqueue(new Callback<List<RetroPhoto>>() {
@@ -90,27 +83,41 @@ public class RetroRepository {
                             });
                         } else {
                             Log.e("Step", "Fetched from db");
-                            list.setValue(count);
+                            list.setValue(retroPhotos);
                         }
                     }
-                }));
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeSubscription.add(observer);
     }
 
+    @SuppressLint("CheckResult")
     private void insertInDatabase(final List<RetroPhoto> list) {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
+
+        Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
-            public void call(Subscriber<? super Integer> subscriber) {
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 Log.e("DB", "Insert");
                 retroDatabase.retroPhotoDao().insertAll(list);
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
+
     private List<RetroPhoto> getFromDatabase() {
         return retroDatabase.retroPhotoDao().getAllRetroPhotoList();
     }
 
     public void onDestroy() {
-
+        mCompositeSubscription.dispose();
     }
 }
