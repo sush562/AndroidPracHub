@@ -14,4 +14,7 @@ data class MovieList(@SerializedName("page") var page: Int,
 
 data class MovieResult(@SerializedName("vote_count") var voteCount: Int,
                        @SerializedName("id") var id: Long,
-                       @SerializedName("video") var video: Boolean)
+                       @SerializedName("video") var video: Boolean,
+                       @SerializedName("title") var title: String,
+                       @SerializedName("poster_path") var posterPath: String,
+                       var posterBaseUrl: String)

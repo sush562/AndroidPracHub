@@ -6,6 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_latest_movie"
+            android:visible="false"
             android:title="@string/menu_latest_movie" />
         <item
             android:id="@+id/nav_now_playing"
