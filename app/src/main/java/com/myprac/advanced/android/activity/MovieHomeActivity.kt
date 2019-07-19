@@ -92,6 +92,7 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         if (navView.checkedItem != item) {
+            movieListViewModel.cancelMovieApiCall()
             movieListViewModel.clearMovieList()
             when (item.itemId) {
                 R.id.nav_latest_movie -> {
@@ -107,7 +108,7 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     movieListViewModel.getTopRatedList()
                 }
                 R.id.nav_upcoming -> {
-
+                    movieListViewModel.getUpcomingList()
                 }
             }
         }

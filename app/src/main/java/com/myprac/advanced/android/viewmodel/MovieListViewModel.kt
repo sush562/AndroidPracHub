@@ -142,14 +142,49 @@ class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
                             override fun onError(e: Throwable) {
                                 Log.e(MovieListViewModel::class.java.simpleName, e.message, e)
                             }
-
                         }))
             }
-
         } else {
             Log.e(MovieListViewModel::class.java.simpleName, "Internet Not connected");
         }
+        return mMovieList
+    }
 
+    fun getUpcomingList(): MutableLiveData<List<MovieResult>> {
+        if (Utils().isNetworkAvailable()) {
+            val movieApi = MovieApiInterface.create()
+            if (TextUtils.isEmpty(posterBaseUrl)) {
+                getConfig(movieApi)
+            } else {
+                val observer: Observable<MovieList> =
+                        movieApi.getUpcomingRx(app.getString(R.string.api_key), mPageCount)
+                mCompositeDisposable.add(observer.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map { movieList ->
+                            for(i in 1..movieList.results.size){
+                                movieList.results[i - 1].posterBaseUrl = posterBaseUrl
+                            }
+                            movieList
+                        }
+                        .subscribeWith(object : DisposableObserver<MovieList>() {
+                            override fun onComplete() {
+
+                            }
+
+                            override fun onNext(movieList: MovieList) {
+                                Log.e("step", "Rx3 - " + movieList.results.size)
+                                mMovieList.value = movieList.results
+                                mPageCount++
+                            }
+
+                            override fun onError(e: Throwable) {
+                                Log.e(MovieListViewModel::class.java.simpleName, e.message, e)
+                            }
+                        }))
+            }
+        } else {
+            Log.e(MovieListViewModel::class.java.simpleName, "Internet Not connected");
+        }
         return mMovieList
     }
 

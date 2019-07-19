@@ -23,6 +23,9 @@ interface MovieApiInterface {
     @GET("movie/top_rated")
     fun getTopRatedRx(@Query("api_key") apiKey: String, @Query("page") page: Int): Observable<MovieList>
 
+    @GET("movie/upcoming")
+    fun getUpcomingRx(@Query("api_key") apiKey: String, @Query("page") page: Int): Observable<MovieList>
+
     @GET("configuration")
     fun getMovieConfig(@Query("api_key") apiKey: String): Observable<MovieConfig>
 

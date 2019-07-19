@@ -19,7 +19,7 @@
             android:title="@string/menu_top_rated" />
         <item
             android:id="@+id/nav_upcoming"
-            android:title="@string/menu_top_rated" />
+            android:title="@string/menu_upcoming" />
     </group>
 
     <!--<item android:title="Communicate">
