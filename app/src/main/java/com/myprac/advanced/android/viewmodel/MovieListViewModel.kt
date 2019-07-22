@@ -27,6 +27,7 @@ class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
     private var movieType: MovieType = MovieType.NOW_PLAYING
     private val movieApi = MovieApiInterface.create()
     private var isFetching: MutableLiveData<Boolean> = MutableLiveData()
+    private var pageTitle: MutableLiveData<String> = MutableLiveData()
 
     fun getMovieList(): MutableLiveData<List<MovieResult>> {
         if (Utils().isNetworkAvailable()) {
@@ -122,7 +123,10 @@ class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun getMovieObserver(): Observable<MovieList> {
         return when (movieType) {
-            MovieType.NOW_PLAYING -> movieApi.getNowPlayingRx(app.getString(R.string.api_key), mPageCount)
+            MovieType.NOW_PLAYING -> {
+                pageTitle.value = app.getString(R.string.menu_now_playing)
+                movieApi.getNowPlayingRx(app.getString(R.string.api_key), mPageCount)
+            }
             MovieType.POPULAR -> movieApi.getPopularRx(app.getString(R.string.api_key), mPageCount)
             MovieType.TOP_RATED -> movieApi.getTopRatedRx(app.getString(R.string.api_key), mPageCount)
             MovieType.UPCOMING -> movieApi.getUpcomingRx(app.getString(R.string.api_key), mPageCount)

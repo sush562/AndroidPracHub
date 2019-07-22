@@ -30,11 +30,13 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private lateinit var movieListViewModel: MovieListViewModel
     private lateinit var navView: NavigationView
     private lateinit var fetchProgressBar: ProgressBar
+    private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_home)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.title = getString(R.string.menu_now_playing)
         setSupportActionBar(toolbar)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -74,7 +76,6 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 adapter.submitList(t)
             }
         })
-
         movieListViewModel.getMovieList()
     }
 
@@ -109,6 +110,7 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         // Handle navigation view item clicks here.
         if (navView.checkedItem != item) {
             //movieListViewModel.cancelMovieApiCall()
+            toolbar.title = item.title
             when (item.itemId) {
                 R.id.nav_latest_movie -> {
 
