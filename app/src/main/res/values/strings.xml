@@ -2,7 +2,7 @@
     <string name="app_name">Advanced Android Tutorial</string>
     <string name="api_key">1bbaf2ee4bb05f97a2fb8959460e6023</string>
     <string name="home_page">Home Page</string>
-    <string name="title_activity_movie_home">MovieHomeActivity</string>
+    <string name="title_activity_movie_home">Movie List</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

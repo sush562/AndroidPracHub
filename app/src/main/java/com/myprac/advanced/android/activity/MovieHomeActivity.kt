@@ -1,8 +1,11 @@
 package com.myprac.advanced.android.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,16 +20,16 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.myprac.advanced.android.R
 import com.myprac.advanced.android.adapter.MovieListAdapter
-import com.myprac.advanced.android.interfaces.HomePageClickCallback
+import com.myprac.advanced.android.enum.MovieType
 import com.myprac.advanced.android.model.MovieResult
 import com.myprac.advanced.android.viewmodel.MovieListViewModel
 
-class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-        HomePageClickCallback {
+class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     private lateinit var movieListViewModel: MovieListViewModel
     private lateinit var navView: NavigationView
+    private lateinit var fetchProgressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +52,26 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         navView.setCheckedItem(R.id.nav_now_playing)
         navView.setNavigationItemSelectedListener(this)
 
+        fetchProgressBar = findViewById(R.id.movie_list_progress_pb)
+
         val movieList: RecyclerView = findViewById(R.id.movie_list_rv)
         movieList.layoutManager = GridLayoutManager(this, 2)
+        val adapter: MovieListAdapter = MovieListAdapter { movieResult -> onMovieClicked(movieResult) }
+        movieList.adapter = adapter
 
         movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
+        movieListViewModel.isFetching().observe(this, Observer<Boolean> { t ->
+            run {
+                if (t) {
+                    fetchProgressBar.visibility = View.VISIBLE
+                } else {
+                    fetchProgressBar.visibility = View.GONE
+                }
+            }
+        })
         movieListViewModel.getMovieList().observe(this, Observer<List<MovieResult>> { t ->
             run {
-                movieList.adapter = MovieListAdapter(t, this, this)
+                adapter.submitList(t)
             }
         })
 
@@ -92,32 +108,32 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         if (navView.checkedItem != item) {
-            movieListViewModel.cancelMovieApiCall()
-            movieListViewModel.clearMovieList()
+            //movieListViewModel.cancelMovieApiCall()
             when (item.itemId) {
                 R.id.nav_latest_movie -> {
 
                 }
                 R.id.nav_now_playing -> {
-                    movieListViewModel.getMovieList()
+                    movieListViewModel.setMovieType(MovieType.NOW_PLAYING)
                 }
                 R.id.nav_popular -> {
-
+                    movieListViewModel.setMovieType(MovieType.POPULAR)
                 }
                 R.id.nav_top_rated -> {
-                    movieListViewModel.getTopRatedList()
+                    movieListViewModel.setMovieType(MovieType.TOP_RATED)
                 }
                 R.id.nav_upcoming -> {
-                    movieListViewModel.getUpcomingList()
+                    movieListViewModel.setMovieType(MovieType.UPCOMING)
                 }
             }
+            movieListViewModel.getMovieList()
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    override fun onClick(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun onMovieClicked(movieResult: MovieResult) {
+        Log.e("Movie Click", movieResult.title)
     }
 }

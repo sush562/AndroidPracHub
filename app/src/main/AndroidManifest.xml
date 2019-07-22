@@ -17,12 +17,14 @@
         <activity
             android:name=".activity.MovieHomeActivity"
             android:label="@string/title_activity_movie_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.DaggerTutorialActivity" />
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.HomePageActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

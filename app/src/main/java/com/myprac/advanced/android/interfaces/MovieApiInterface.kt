@@ -1,5 +1,6 @@
 package com.myprac.advanced.android.interfaces
 
+import androidx.room.Dao
 import com.myprac.advanced.android.model.MovieConfig
 import com.myprac.advanced.android.model.MovieList
 import io.reactivex.Observable
@@ -12,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+@Dao
 interface MovieApiInterface {
 
     @GET("movie/now_playing")
@@ -25,6 +27,9 @@ interface MovieApiInterface {
 
     @GET("movie/upcoming")
     fun getUpcomingRx(@Query("api_key") apiKey: String, @Query("page") page: Int): Observable<MovieList>
+
+    @GET("movie/popular")
+    fun getPopularRx(@Query("api_key") apiKey: String, @Query("page") page: Int): Observable<MovieList>
 
     @GET("configuration")
     fun getMovieConfig(@Query("api_key") apiKey: String): Observable<MovieConfig>
