@@ -1,5 +1,6 @@
 package com.myprac.advanced.android.activity.movie
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -162,5 +163,8 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private fun onMovieClicked(movieResult: MovieResult) {
         Log.e("Movie Click", movieResult.title)
+        val intent = Intent(this, MovieDetailActivity::class.java)
+        intent.putExtra("movie_data", movieResult)
+        startActivity(intent)
     }
 }

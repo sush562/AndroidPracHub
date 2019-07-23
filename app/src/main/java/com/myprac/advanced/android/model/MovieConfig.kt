@@ -1,6 +1,7 @@
 package com.myprac.advanced.android.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class MovieConfigUrl(@SerializedName("base_url") val baseUrl: String,
                        @SerializedName("secure_base_url") val secureBaseUrl: String)
@@ -17,4 +18,6 @@ data class MovieResult(@SerializedName("vote_count") var voteCount: Int,
                        @SerializedName("video") var video: Boolean,
                        @SerializedName("title") var title: String,
                        @SerializedName("poster_path") var posterPath: String,
-                       var posterBaseUrl: String)
+                       @SerializedName("backdrop_path") var backdropPath: String,
+                       @SerializedName("overview") var overview: String,
+                       var posterBaseUrl: String) : Serializable
