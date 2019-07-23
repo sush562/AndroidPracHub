@@ -1,4 +1,4 @@
-package com.myprac.advanced.android.adapter
+package com.myprac.advanced.android.adapter.movie
 
 import android.view.LayoutInflater
 import android.view.View

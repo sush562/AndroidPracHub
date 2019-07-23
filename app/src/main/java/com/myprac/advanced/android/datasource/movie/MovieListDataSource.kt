@@ -1,11 +1,11 @@
-package com.myprac.advanced.android.datasource
+package com.myprac.advanced.android.datasource.movie
 
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
 import com.myprac.advanced.android.R
 import com.myprac.advanced.android.RetroApp
-import com.myprac.advanced.android.enum.MovieType
-import com.myprac.advanced.android.interfaces.MovieApiInterface
+import com.myprac.advanced.android.enumclass.movie.MovieType
+import com.myprac.advanced.android.interfaces.movie.MovieApiInterface
 import com.myprac.advanced.android.model.MovieList
 import com.myprac.advanced.android.model.MovieResult
 import io.reactivex.Observable

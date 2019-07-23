@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.myprac.advanced.android.R
+import com.myprac.advanced.android.activity.movie.MovieHomeActivity
 import com.myprac.advanced.android.adapter.HomePageAdapter
 import com.myprac.advanced.android.interfaces.HomePageClickCallback
 

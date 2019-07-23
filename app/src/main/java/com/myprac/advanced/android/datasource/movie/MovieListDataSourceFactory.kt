@@ -1,10 +1,9 @@
-package com.myprac.advanced.android.datasource.factory
+package com.myprac.advanced.android.datasource.movie
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.myprac.advanced.android.datasource.MovieListDataSource
-import com.myprac.advanced.android.enum.MovieType
-import com.myprac.advanced.android.interfaces.MovieApiInterface
+import com.myprac.advanced.android.enumclass.movie.MovieType
+import com.myprac.advanced.android.interfaces.movie.MovieApiInterface
 import com.myprac.advanced.android.model.MovieResult
 import io.reactivex.disposables.CompositeDisposable
 

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MovieHomeActivity"
+            android:name=".activity.movie.MovieHomeActivity"
             android:label="@string/title_activity_movie_home"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />

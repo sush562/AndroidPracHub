@@ -1,6 +1,5 @@
-package com.myprac.advanced.android.adapter
+package com.myprac.advanced.android.adapter.movie
 
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

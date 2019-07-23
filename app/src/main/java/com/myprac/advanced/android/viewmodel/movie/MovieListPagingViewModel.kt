@@ -1,4 +1,4 @@
-package com.myprac.advanced.android.viewmodel
+package com.myprac.advanced.android.viewmodel.movie
 
 import android.app.Application
 import android.util.Log
@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.myprac.advanced.android.datasource.factory.MovieListDataSourceFactory
+import com.myprac.advanced.android.datasource.movie.MovieListDataSourceFactory
 import com.myprac.advanced.android.model.MovieResult
 
 class MovieListPagingViewModel(val app1: Application) : MovieListViewModel(app1) {

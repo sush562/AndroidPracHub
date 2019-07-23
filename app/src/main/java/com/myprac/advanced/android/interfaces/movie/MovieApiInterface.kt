@@ -1,10 +1,9 @@
-package com.myprac.advanced.android.interfaces
+package com.myprac.advanced.android.interfaces.movie
 
 import androidx.room.Dao
 import com.myprac.advanced.android.model.MovieConfig
 import com.myprac.advanced.android.model.MovieList
 import io.reactivex.Observable
-import io.reactivex.observers.DisposableObserver
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -37,7 +36,7 @@ interface MovieApiInterface {
     companion object Factory{
         val BASE_URL = "https://api.themoviedb.org/3/"
 
-        fun create(): MovieApiInterface{
+        fun create(): MovieApiInterface {
             val retrofit = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

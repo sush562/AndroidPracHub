@@ -1,4 +1,4 @@
-package com.myprac.advanced.android.viewmodel
+package com.myprac.advanced.android.viewmodel.movie
 
 import android.app.Application
 import android.text.TextUtils
@@ -7,8 +7,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.myprac.advanced.android.R
 import com.myprac.advanced.android.Utils
-import com.myprac.advanced.android.enum.MovieType
-import com.myprac.advanced.android.interfaces.MovieApiInterface
+import com.myprac.advanced.android.enumclass.movie.MovieType
+import com.myprac.advanced.android.interfaces.movie.MovieApiInterface
 import com.myprac.advanced.android.model.MovieConfig
 import com.myprac.advanced.android.model.MovieList
 import com.myprac.advanced.android.model.MovieResult

@@ -1,10 +1,9 @@
-package com.myprac.advanced.android.activity
+package com.myprac.advanced.android.activity.movie
 
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -20,12 +19,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.myprac.advanced.android.R
-import com.myprac.advanced.android.adapter.MovieListAdapter
-import com.myprac.advanced.android.adapter.MoviePagedListAdapter
-import com.myprac.advanced.android.enum.MovieType
+import com.myprac.advanced.android.adapter.movie.MoviePagedListAdapter
+import com.myprac.advanced.android.enumclass.movie.MovieType
 import com.myprac.advanced.android.model.MovieResult
-import com.myprac.advanced.android.viewmodel.MovieListPagingViewModel
-import com.myprac.advanced.android.viewmodel.MovieListViewModel
+import com.myprac.advanced.android.viewmodel.movie.MovieListPagingViewModel
 
 class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 

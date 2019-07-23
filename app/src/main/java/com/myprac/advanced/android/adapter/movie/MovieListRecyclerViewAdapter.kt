@@ -1,4 +1,4 @@
-package com.myprac.advanced.android.adapter
+package com.myprac.advanced.android.adapter.movie
 
 import android.content.Context
 import android.util.Log
