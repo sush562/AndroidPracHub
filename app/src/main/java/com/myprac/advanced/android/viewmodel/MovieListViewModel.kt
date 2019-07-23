@@ -18,14 +18,15 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
+open class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
 
     private val mMovieList: MutableLiveData<List<MovieResult>> = MutableLiveData()
     private var mPageCount: Int = 1
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
-    private var posterBaseUrl: String = ""
-    private var movieType: MovieType = MovieType.NOW_PLAYING
-    private val movieApi = MovieApiInterface.create()
+    val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    var posterBaseUrl: String = ""
+    var movieType: MovieType = MovieType.NOW_PLAYING
+    val movieApi = MovieApiInterface.create()
+    var isConfigFetching: MutableLiveData<Boolean> = MutableLiveData()
     private var isFetching: MutableLiveData<Boolean> = MutableLiveData()
     private var pageTitle: MutableLiveData<String> = MutableLiveData()
 
@@ -33,7 +34,7 @@ class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
         if (Utils().isNetworkAvailable()) {
             isFetching.value = true
             if (TextUtils.isEmpty(posterBaseUrl)) {
-                getConfig(movieApi)
+                getConfig(movieApi, true)
             } else {
                 val observer: Observable<MovieList> = getMovieObserver()
                 mCompositeDisposable.add(observer.subscribeOn(Schedulers.io())
@@ -111,7 +112,7 @@ class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
         return mMovieList
     }
 
-    fun setMovieType(movieType: MovieType) {
+    fun resetMovieType(movieType: MovieType) {
         mMovieList.value = ArrayList()
         mPageCount = 1
         this.movieType = movieType
@@ -130,7 +131,8 @@ class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun getConfig(movieApi: MovieApiInterface) {
+    fun getConfig(movieApi: MovieApiInterface, getMovieList: Boolean) {
+        isConfigFetching.value = true
         val configObs: Observable<MovieConfig> = movieApi.getMovieConfig(app.getString(R.string.api_key))
         mCompositeDisposable.add(configObs.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -142,10 +144,14 @@ class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
                     override fun onNext(movieConfig: MovieConfig) {
                         posterBaseUrl = movieConfig.imageConfig.secureBaseUrl
                         Log.e("Poster base url", posterBaseUrl)
-                        getMovieList()
+                        isConfigFetching.value = false
+                        if(getMovieList){
+                            getMovieList()
+                        }
                     }
 
                     override fun onError(e: Throwable) {
+                        isConfigFetching.value = false
                         Log.e(MovieListViewModel::class.java.simpleName, e.message, e)
                     }
 

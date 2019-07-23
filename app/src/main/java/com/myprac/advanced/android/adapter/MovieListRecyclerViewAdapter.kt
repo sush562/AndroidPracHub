@@ -16,8 +16,8 @@ import com.myprac.advanced.android.RetroApp
 import com.myprac.advanced.android.interfaces.HomePageClickCallback
 import com.myprac.advanced.android.model.MovieResult
 
-class MovieListAdapterOld(val items: List<MovieResult>, val context: Context, val click: HomePageClickCallback) :
-        RecyclerView.Adapter<MovieListAdapterOld.ViewHolder>() {
+class MovieListRecyclerViewAdapter(val items: List<MovieResult>, val context: Context, val click: HomePageClickCallback) :
+        RecyclerView.Adapter<MovieListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.movie_list_icon_layout, parent, false))

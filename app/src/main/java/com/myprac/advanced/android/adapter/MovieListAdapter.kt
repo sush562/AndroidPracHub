@@ -20,8 +20,7 @@ class MovieListAdapter(private val movieClickListener: (MovieResult) -> Unit) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder {
-        val viewHolder = MovieListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_list_icon_layout, parent, false))
-        return viewHolder
+        return MovieListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_list_icon_layout, parent, false))
     }
 
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
@@ -40,7 +39,7 @@ class MovieListAdapter(private val movieClickListener: (MovieResult) -> Unit) :
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieResult>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieResult>() {
             override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
                 return oldItem.id == newItem.id
             }

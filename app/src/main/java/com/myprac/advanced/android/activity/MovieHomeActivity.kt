@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,17 +21,21 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.myprac.advanced.android.R
 import com.myprac.advanced.android.adapter.MovieListAdapter
+import com.myprac.advanced.android.adapter.MoviePagedListAdapter
 import com.myprac.advanced.android.enum.MovieType
 import com.myprac.advanced.android.model.MovieResult
+import com.myprac.advanced.android.viewmodel.MovieListPagingViewModel
 import com.myprac.advanced.android.viewmodel.MovieListViewModel
 
 class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-    private lateinit var movieListViewModel: MovieListViewModel
+    private lateinit var movieListViewModel: MovieListPagingViewModel
     private lateinit var navView: NavigationView
     private lateinit var fetchProgressBar: ProgressBar
     private lateinit var toolbar: Toolbar
+    private lateinit var movieList: RecyclerView
+    private lateinit var adapter: MoviePagedListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,13 +61,12 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         fetchProgressBar = findViewById(R.id.movie_list_progress_pb)
 
-        val movieList: RecyclerView = findViewById(R.id.movie_list_rv)
+        movieList = findViewById(R.id.movie_list_rv)
         movieList.layoutManager = GridLayoutManager(this, 2)
-        val adapter: MovieListAdapter = MovieListAdapter { movieResult -> onMovieClicked(movieResult) }
-        movieList.adapter = adapter
 
-        movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
-        movieListViewModel.isFetching().observe(this, Observer<Boolean> { t ->
+
+        movieListViewModel = ViewModelProviders.of(this).get(MovieListPagingViewModel::class.java)
+        /*movieListViewModel.isFetching().observe(this, Observer<Boolean> { t ->
             run {
                 if (t) {
                     fetchProgressBar.visibility = View.VISIBLE
@@ -70,13 +74,35 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     fetchProgressBar.visibility = View.GONE
                 }
             }
+        })*/
+        //movieListViewModel.getMovieList()
+
+        movieListViewModel.getIsConfigFetching().observe(this, Observer<Boolean> { t ->
+            run {
+                if (t) {
+                    Log.e(MovieHomeActivity::class.java.simpleName, "Fetching Config")
+                } else {
+                    initializeAdapter()
+                }
+            }
         })
-        movieListViewModel.getMovieList().observe(this, Observer<List<MovieResult>> { t ->
+
+        movieListViewModel.getConfig()
+    }
+
+    private fun getPagedListObserver(): Observer<PagedList<MovieResult>>{
+        return Observer<PagedList<MovieResult>> { t ->
             run {
                 adapter.submitList(t)
             }
-        })
-        movieListViewModel.getMovieList()
+        }
+    }
+
+    private fun initializeAdapter(){
+        adapter = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
+        movieList.adapter = adapter
+        movieListViewModel.initializeDataSource()
+        movieListViewModel.getPagedMovieList().observe(this, getPagedListObserver())
     }
 
 
@@ -116,19 +142,21 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
                 }
                 R.id.nav_now_playing -> {
-                    movieListViewModel.setMovieType(MovieType.NOW_PLAYING)
+                    movieListViewModel.resetMovieType(MovieType.NOW_PLAYING)
                 }
                 R.id.nav_popular -> {
-                    movieListViewModel.setMovieType(MovieType.POPULAR)
+                    movieListViewModel.resetMovieType(MovieType.POPULAR)
                 }
                 R.id.nav_top_rated -> {
-                    movieListViewModel.setMovieType(MovieType.TOP_RATED)
+                    movieListViewModel.resetMovieType(MovieType.TOP_RATED)
                 }
                 R.id.nav_upcoming -> {
-                    movieListViewModel.setMovieType(MovieType.UPCOMING)
+                    movieListViewModel.resetMovieType(MovieType.UPCOMING)
                 }
             }
-            movieListViewModel.getMovieList()
+            //movieListViewModel.getMovieList()
+            movieListViewModel.getPagedMovieList().removeObserver(getPagedListObserver())
+            initializeAdapter()
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
