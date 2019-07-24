@@ -38,8 +38,4 @@ class MovieListPagingViewModel(val app1: Application) : MovieListViewModel(app1)
                 .build()
         mPagedMovieList = LivePagedListBuilder<Int, MovieResult>(movieListDataSourceFactory, config).build()
     }
-
-    fun clear(){
-        movieListDataSourceFactory.movieDataSource.value?.invalidate()
-    }
 }

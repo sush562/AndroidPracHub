@@ -17,8 +17,18 @@ import kotlinx.android.synthetic.main.movie_list_icon_layout.view.*
 class MoviePagedListAdapter(private val movieClickListener: (MovieResult) -> Unit) :
         PagedListAdapter<MovieResult, MoviePagedListAdapter.MovieListPagedViewHolder>(MovieListAdapter.DIFF_CALLBACK) {
 
+    private var inflateLayout: Int = 0;
+
+    fun setInflateLayout(inflateLayout: Int){
+        this.inflateLayout = inflateLayout
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListPagedViewHolder {
-        return MovieListPagedViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_list_icon_layout, parent, false))
+        if(inflateLayout == 0){
+            return MovieListPagedViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_list_icon_layout, parent, false))
+        } else {
+            return MovieListPagedViewHolder(LayoutInflater.from(parent.context).inflate(inflateLayout, parent, false))
+        }
     }
 
     override fun onBindViewHolder(holder: MovieListPagedViewHolder, position: Int) {
