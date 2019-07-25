@@ -62,7 +62,6 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         movieList = findViewById(R.id.movie_list_rv)
         movieList.layoutManager = GridLayoutManager(this, 2)
 
-
         movieListViewModel = ViewModelProviders.of(this).get(MovieListPagingViewModel::class.java)
         /*movieListViewModel.isFetching().observe(this, Observer<Boolean> { t ->
             run {
@@ -75,17 +74,7 @@ class MovieHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         })*/
         //movieListViewModel.getMovieList()
 
-        movieListViewModel.getIsConfigFetching().observe(this, Observer<Boolean> { t ->
-            run {
-                if (t) {
-                    Log.e(MovieHomeActivity::class.java.simpleName, "Fetching Config")
-                } else {
-                    initializeAdapter()
-                }
-            }
-        })
-
-        movieListViewModel.getConfig()
+        initializeAdapter()
     }
 
     private fun getPagedListObserver(): Observer<PagedList<MovieResult>>{

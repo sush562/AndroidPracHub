@@ -34,20 +34,11 @@ class MovieListPagingHorizontalViewModel(val app1: Application) : MovieListViewM
         return mUpcomingMovieList
     }
 
-    fun getIsConfigFetching(): MutableLiveData<Boolean>{
-        return isConfigFetching
-    }
-
-    fun getConfig(){
-        getConfig(movieApi, false)
-    }
-
     fun initializeDataSource(){
-        Log.e("Got",  "test - " + posterBaseUrl)
-        val factory1: MovieListDataSourceFactory = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.NOW_PLAYING, posterBaseUrl)
-        val factory2: MovieListDataSourceFactory = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.POPULAR, posterBaseUrl)
-        val factory3: MovieListDataSourceFactory = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.TOP_RATED, posterBaseUrl)
-        val factory4: MovieListDataSourceFactory = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.UPCOMING, posterBaseUrl)
+        val factory1 = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.NOW_PLAYING)
+        val factory2 = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.POPULAR)
+        val factory3 = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.TOP_RATED)
+        val factory4 = MovieListDataSourceFactory(movieApi, mCompositeDisposable, MovieType.UPCOMING)
         val config = PagedList.Config.Builder()
                 .setPageSize(pageSize)
                 .setEnablePlaceholders(false)

@@ -14,16 +14,15 @@ import io.reactivex.observers.DisposableObserver
 
 class MovieListDataSource(private val movieApi: MovieApiInterface,
                           private val compositeDisposable: CompositeDisposable,
-                          private val movieType: MovieType,
-                          private val posterBaseUrl: String) :
+                          private val movieType: MovieType) :
         PageKeyedDataSource<Int, MovieResult>() {
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieResult>) {
-        Log.e(MovieListDataSource::class.java.simpleName, "First Load - " + posterBaseUrl)
+        Log.e(MovieListDataSource::class.java.simpleName, "First Load")
         compositeDisposable.add(getMovieObserver(1)
                 .map { movieList ->
                     for (i in 1..movieList.results.size) {
-                        movieList.results[i - 1].posterBaseUrl = posterBaseUrl
+                        movieList.results[i - 1].posterBaseUrl = RetroApp.imageBasePath
                     }
                     movieList
                 }
@@ -53,7 +52,7 @@ class MovieListDataSource(private val movieApi: MovieApiInterface,
         compositeDisposable.add(getMovieObserver(params.key)
                 .map { movieList ->
                     for (i in 1..movieList.results.size) {
-                        movieList.results[i - 1].posterBaseUrl = posterBaseUrl
+                        movieList.results[i - 1].posterBaseUrl = RetroApp.imageBasePath
                     }
                     movieList
                 }

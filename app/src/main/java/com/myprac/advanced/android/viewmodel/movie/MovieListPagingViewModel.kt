@@ -20,17 +20,8 @@ class MovieListPagingViewModel(val app1: Application) : MovieListViewModel(app1)
         return mPagedMovieList
     }
 
-    fun getIsConfigFetching(): MutableLiveData<Boolean>{
-        return isConfigFetching
-    }
-
-    fun getConfig(){
-        getConfig(movieApi, false)
-    }
-
     fun initializeDataSource(){
-        Log.e("Got",  "test - " + posterBaseUrl)
-        movieListDataSourceFactory = MovieListDataSourceFactory(movieApi, mCompositeDisposable, movieType, posterBaseUrl)
+        movieListDataSourceFactory = MovieListDataSourceFactory(movieApi, mCompositeDisposable, movieType)
         val config = PagedList.Config.Builder()
                 .setPageSize(pageSize)
                 .setEnablePlaceholders(false)

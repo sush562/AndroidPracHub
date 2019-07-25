@@ -26,50 +26,40 @@ class MovieHorizontalListActivity : AppCompatActivity() {
 
         val movieListViewModel = ViewModelProviders.of(this).get(MovieListPagingHorizontalViewModel::class.java)
 
-        movieListViewModel.getIsConfigFetching().observe(this, Observer<Boolean> { t ->
-            run {
-                if (t) {
-                    Log.e(MovieHomeActivity::class.java.simpleName, "Fetching Config")
-                } else {
-                    val adapter1 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
-                    adapter1.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
-                    nowPlayingList.adapter = adapter1
-                    val adapter2 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
-                    adapter2.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
-                    popularList.adapter = adapter2
-                    val adapter3 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
-                    adapter3.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
-                    topRatedList.adapter = adapter3
-                    val adapter4 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
-                    adapter4.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
-                    upcomingList.adapter = adapter4
+        val adapter1 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
+        adapter1.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
+        nowPlayingList.adapter = adapter1
+        val adapter2 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
+        adapter2.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
+        popularList.adapter = adapter2
+        val adapter3 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
+        adapter3.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
+        topRatedList.adapter = adapter3
+        val adapter4 = MoviePagedListAdapter { movieResult -> onMovieClicked(movieResult) }
+        adapter4.setInflateLayout(R.layout.movie_list_horizontal_icon_layout)
+        upcomingList.adapter = adapter4
 
-                    movieListViewModel.initializeDataSource()
-                    movieListViewModel.getNowPlayingMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
-                        run {
-                            adapter1.submitList(t)
-                        }
-                    })
-                    movieListViewModel.getPopularMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
-                        run {
-                            adapter2.submitList(t)
-                        }
-                    })
-                    movieListViewModel.getTopRatedMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
-                        run {
-                            adapter3.submitList(t)
-                        }
-                    })
-                    movieListViewModel.getUpcomingMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
-                        run {
-                            adapter4.submitList(t)
-                        }
-                    })
-                }
+        movieListViewModel.initializeDataSource()
+        movieListViewModel.getNowPlayingMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
+            run {
+                adapter1.submitList(t)
             }
         })
-
-        movieListViewModel.getConfig()
+        movieListViewModel.getPopularMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
+            run {
+                adapter2.submitList(t)
+            }
+        })
+        movieListViewModel.getTopRatedMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
+            run {
+                adapter3.submitList(t)
+            }
+        })
+        movieListViewModel.getUpcomingMovieList().observe(this, Observer<PagedList<MovieResult>> { t ->
+            run {
+                adapter4.submitList(t)
+            }
+        })
     }
 
     private fun onMovieClicked(movieResult: MovieResult) {

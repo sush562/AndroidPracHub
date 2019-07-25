@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.myprac.advanced.android.R
+import com.myprac.advanced.android.RetroApp
 import com.myprac.advanced.android.Utils
 import com.myprac.advanced.android.enumclass.movie.MovieType
 import com.myprac.advanced.android.interfaces.movie.MovieApiInterface
@@ -23,47 +24,39 @@ open class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
     private val mMovieList: MutableLiveData<List<MovieResult>> = MutableLiveData()
     private var mPageCount: Int = 1
     val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
-    var posterBaseUrl: String = ""
     var movieType: MovieType = MovieType.NOW_PLAYING
     val movieApi = MovieApiInterface.create()
-    var isConfigFetching: MutableLiveData<Boolean> = MutableLiveData()
     private var isFetching: MutableLiveData<Boolean> = MutableLiveData()
-    private var pageTitle: MutableLiveData<String> = MutableLiveData()
 
     fun getMovieList(): MutableLiveData<List<MovieResult>> {
         if (Utils().isNetworkAvailable()) {
             isFetching.value = true
-            if (TextUtils.isEmpty(posterBaseUrl)) {
-                getConfig(movieApi, true)
-            } else {
-                val observer: Observable<MovieList> = getMovieObserver()
-                mCompositeDisposable.add(observer.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .map { movieList ->
-                            for (i in 1..movieList.results.size) {
-                                movieList.results[i - 1].posterBaseUrl = posterBaseUrl
-                            }
-                            movieList
+            val observer: Observable<MovieList> = getMovieObserver()
+            mCompositeDisposable.add(observer.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map { movieList ->
+                        for (i in 1..movieList.results.size) {
+                            movieList.results[i - 1].posterBaseUrl = RetroApp.imageBasePath
                         }
-                        .subscribeWith(object : DisposableObserver<MovieList>() {
-                            override fun onComplete() {
-                                isFetching.value = false
-                            }
+                        movieList
+                    }
+                    .subscribeWith(object : DisposableObserver<MovieList>() {
+                        override fun onComplete() {
+                            isFetching.value = false
+                        }
 
-                            override fun onNext(movieList: MovieList) {
-                                Log.e("step", "Rx3 - " + movieList.results.size)
-                                mMovieList.value = movieList.results
-                                mPageCount++
-                            }
+                        override fun onNext(movieList: MovieList) {
+                            Log.e("step", "Rx3 - " + movieList.results.size)
+                            mMovieList.value = movieList.results
+                            mPageCount++
+                        }
 
-                            override fun onError(e: Throwable) {
-                                Log.e(MovieListViewModel::class.java.simpleName, e.message, e)
-                                isFetching.value = false
-                            }
+                        override fun onError(e: Throwable) {
+                            Log.e(MovieListViewModel::class.java.simpleName, e.message, e)
+                            isFetching.value = false
+                        }
 
-                        }))
-            }
-
+                    }))
         } else {
             Log.e(MovieListViewModel::class.java.simpleName, "Internet Not connected");
         }
@@ -129,33 +122,6 @@ open class MovieListViewModel(val app: Application) : AndroidViewModel(app) {
             MovieType.TOP_RATED -> movieApi.getTopRatedRx(app.getString(R.string.api_key), mPageCount)
             MovieType.UPCOMING -> movieApi.getUpcomingRx(app.getString(R.string.api_key), mPageCount)
         }
-    }
-
-    fun getConfig(movieApi: MovieApiInterface, getMovieList: Boolean) {
-        isConfigFetching.value = true
-        val configObs: Observable<MovieConfig> = movieApi.getMovieConfig(app.getString(R.string.api_key))
-        mCompositeDisposable.add(configObs.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<MovieConfig>() {
-                    override fun onComplete() {
-
-                    }
-
-                    override fun onNext(movieConfig: MovieConfig) {
-                        posterBaseUrl = movieConfig.imageConfig.secureBaseUrl
-                        Log.e("Poster base url", posterBaseUrl)
-                        isConfigFetching.value = false
-                        if(getMovieList){
-                            getMovieList()
-                        }
-                    }
-
-                    override fun onError(e: Throwable) {
-                        isConfigFetching.value = false
-                        Log.e(MovieListViewModel::class.java.simpleName, e.message, e)
-                    }
-
-                }))
     }
 
     fun cancelMovieApiCall() {
