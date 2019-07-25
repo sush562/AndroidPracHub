@@ -17,4 +17,6 @@
     <string name="menu_upcoming">Upcoming</string>
     <string name="title_activity_movie_detail">MovieDetailActivity</string>
 
+    <string name="release_year">Release Date: %1$s</string>
+
 </resources>

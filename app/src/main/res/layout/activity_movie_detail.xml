@@ -8,8 +8,7 @@
             type="com.myprac.advanced.android.viewmodel.movie.MovieDetailViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,12 +56,28 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:showIn="@layout/activity_movie_detail">
 
-            <TextView
-                android:id="@+id/movie_detail_desc_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@={movieDetailViewModel.movieDetail.overview}"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/movie_detail_desc_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="@={movieDetailViewModel.movieDetail.overview}" />
+
+                <TextView
+                    android:id="@+id/movie_detail_release_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movie_detail_desc_tv"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="@{@string/release_year(movieDetailViewModel.movieDetail.releaseDate)}" />
+
+            </RelativeLayout>
 
         </androidx.core.widget.NestedScrollView>
 
