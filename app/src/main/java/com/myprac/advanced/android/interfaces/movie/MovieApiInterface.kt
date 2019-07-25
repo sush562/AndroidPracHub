@@ -2,6 +2,7 @@ package com.myprac.advanced.android.interfaces.movie
 
 import androidx.room.Dao
 import com.myprac.advanced.android.model.MovieConfig
+import com.myprac.advanced.android.model.MovieDetail
 import com.myprac.advanced.android.model.MovieList
 import io.reactivex.Observable
 import retrofit2.Call
@@ -10,6 +11,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 //import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 @Dao
@@ -32,6 +34,9 @@ interface MovieApiInterface {
 
     @GET("configuration")
     fun getMovieConfig(@Query("api_key") apiKey: String): Observable<MovieConfig>
+
+    @GET("movie/{movieid}")
+    fun getMovieDetail(@Path("movieid") movieId: Long, @Query("api_key") apiKey: String): Observable<MovieDetail>
 
     companion object Factory{
         val BASE_URL = "https://api.themoviedb.org/3/"

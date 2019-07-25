@@ -75,7 +75,8 @@ class MovieHorizontalListActivity : AppCompatActivity() {
     private fun onMovieClicked(movieResult: MovieResult) {
         Log.e("Movie Click", movieResult.title)
         val intent = Intent(this, MovieDetailActivity::class.java)
-        intent.putExtra("movie_data", movieResult)
+        intent.putExtra("movie_id", movieResult.id)
+        intent.putExtra("backdrop_path", movieResult.backdropPath)
         startActivity(intent)
     }
 

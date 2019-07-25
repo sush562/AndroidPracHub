@@ -44,8 +44,6 @@ class HomePageActivity : AppCompatActivity(), HomePageClickCallback {
             startActivity(intent)
 
         } else if (position == 2) {
-            /*intent = Intent(this, DaggerTutorialActivity::class.java)
-            startActivity(intent)*/
             intent = Intent(this, MovieHorizontalListActivity::class.java)
             startActivity(intent)
 

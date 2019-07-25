@@ -9,9 +9,9 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.myprac.advanced.android.R;
 import com.myprac.advanced.android.databinding.ContentSecondBinding;
 import com.myprac.advanced.android.viewmodel.UserViewModel;
-import com.myprac.advanced.android.R;
 
 public class SecondActivity extends AppCompatActivity {
 

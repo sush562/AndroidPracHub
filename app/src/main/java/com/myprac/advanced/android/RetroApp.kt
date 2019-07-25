@@ -10,6 +10,7 @@ class RetroApp : Application() {
     companion object {
         lateinit var instance: RetroApp
             private set
+        var imageBasePath: String = "https://image.tmdb.org/t/p/"
     }
 
     val component: ApplicationComponent by lazy {

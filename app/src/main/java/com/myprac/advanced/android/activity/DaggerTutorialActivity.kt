@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.myprac.advanced.android.R
-import com.myprac.advanced.android.interfaces.DaggerApplicationComponent
 import javax.inject.Inject
 
 class DaggerTutorialActivity : AppCompatActivity() {

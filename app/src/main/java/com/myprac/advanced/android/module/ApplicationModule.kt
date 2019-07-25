@@ -1,11 +1,6 @@
 package com.myprac.advanced.android.module
 
-import android.app.Activity
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import com.myprac.advanced.android.RetroApp
-import com.myprac.advanced.android.scope.MyApplicationScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

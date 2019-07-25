@@ -1,6 +1,5 @@
 package com.myprac.advanced.android.interfaces
 
-import android.app.Activity
 import android.app.Application
 import com.myprac.advanced.android.module.ApplicationModule
 import dagger.Component
